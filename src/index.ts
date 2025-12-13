@@ -1,22 +1,15 @@
 import express from "express";
-import * as dotenv from "dotenv";
 import mongoose from "mongoose";
-import { UserModel } from "./database";
+import * as dotenv from "dotenv";
+import userRouter from "./routes/user";
+import noteRouter from "./routes/note";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.post("/", async (req, res) => {
-  const { email, password } = req.body;
-  await UserModel.create({
-    email: email,
-    password: password
-  });
-  res.json({
-    msg: "signed up sucessfully",
-  });
-});
+app.use("/users", userRouter);
+app.use("/dashboard", noteRouter);
 
 async function main() {
   try {

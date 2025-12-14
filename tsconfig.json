@@ -10,7 +10,7 @@
     "module": "esnext",    //changed 
     "target": "esnext",
     "moduleResolution": "bundler",  //added
-    "types": [],
+    "types": ["node"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -41,8 +41,10 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-
+    
+   
     "esModuleInterop": true,    //added
     "allowSyntheticDefaultImports": true,     //added
-  }
+  },
+  "include": ["src"]
 }

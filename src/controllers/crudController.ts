@@ -1,4 +1,3 @@
-// createController, deleteController, updateController, getController
 import { Request, Response } from "express";
 import { ContentModel } from "../database/db";
 import { z } from "zod";
@@ -54,9 +53,10 @@ export const createController = async (req: Request, res: Response) => {
       msg: "Content created successfully",
       parsedData,
     });
-  } catch (error) {
+  } catch (e) {
     res.status(500).json({
-      msg: "Error creating todo",
+      msg: "Error creating Content",
+      error: e,
     });
   }
 };
@@ -115,6 +115,6 @@ export const updateController = async (req: Request, res: Response) => {
     }
     res.status(200).json({ msg: "Content updated!" });
   } catch (error) {
-    res.status(500).json({ msg: "Error updating todo" });
+    res.status(500).json({ msg: "Error updating Content" });
   }
 };

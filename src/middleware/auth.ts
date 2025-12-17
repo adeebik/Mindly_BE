@@ -19,9 +19,11 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const verfyingToken = jwt.verify(token, secret) as JwtPayload;
+    console.log(verfyingToken);
+    
     if (!verfyingToken) {
-    return res.status(401).json({ msg: "Unauthorized" });
-  }
+      return res.status(401).json({ msg: "Unauthorized" });
+    }
     req.userId = verfyingToken.id as string;
 
     next();
@@ -29,3 +31,4 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ msg: "Invalid or expired token" });
   }
 };
+ 

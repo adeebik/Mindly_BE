@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import userRouter from "./routes/user";
 import noteRouter from "./routes/note";
+import shareRouter from "./routes/share";
 
 dotenv.config();
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use("/users", userRouter);
 app.use("/dashboard", noteRouter);
+app.use("/share", shareRouter)
 
 async function main() {
   try {

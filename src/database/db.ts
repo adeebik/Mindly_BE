@@ -9,7 +9,8 @@ const UserSchema = new Schema({
     lowercase: true,
   },
   password: { type: String, required: true },
-  name:{type:String, required: true}
+  name:{type:String, required: true},
+  share:{type:Boolean , required: true}
 });
 
 const ContentTypes = ["audio", "video", "link"];
@@ -19,6 +20,7 @@ const ContentSchema = new Schema({
   title: { type: String, required: true },
   tags: [{ type: Types.ObjectId, ref: "tags" }],
   userId: { type: Types.ObjectId, ref: "users" , required: true},
+  share:{type:Boolean , required: true}
 });
 
 const TagSchema = new Schema({

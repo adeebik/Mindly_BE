@@ -7,10 +7,7 @@ export const getController = async (req: Request, res: Response) => {
   const userId = req.userId;
 
   try {
-    const contents = await ContentModel.find({ userId: userId! }).populate(
-      "tags",
-      "title"
-    );
+    const contents = await ContentModel.find({ userId: userId! }).populate("tags","title" , ).populate("userId" , "name");
 
     res.status(200).json({ contents });
   } catch (error) {
@@ -23,6 +20,7 @@ const contentSchema = z.object({
   type: z.enum(["audio", "video", "link"]),
   title: z.string().min(1),
   tags: z.array(z.string()).optional().default([]),
+  share: z.boolean().default(false)
 });
 
 export const createController = async (req: Request, res: Response) => {

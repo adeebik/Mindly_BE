@@ -17,8 +17,9 @@ export const getController = async (req: Request, res: Response) => {
 
 const contentSchema = z.object({
   link: z.string().url("Must be a valid URL").min(1),
-  type: z.enum(["audio", "video", "link"]),
+  type: z.enum(["youtube", "twitter"]),
   title: z.string().min(1).max(200, "Title too long"),
+  description : z.string().optional().default(""),
   tags: z.array(z.string()).max(6, "Maximum 6 tags").optional().default([]),
 });
 
@@ -31,7 +32,7 @@ export const createController = async (req: Request, res: Response) => {
       .status(400)
       .json({ msg: "Invalid content", errors: parsedData.error });
   }
-  const { link, type, title, tags } = parsedData.data;
+  const { link, type, title, tags , description} = parsedData.data;
 
   try {
 
@@ -48,6 +49,7 @@ export const createController = async (req: Request, res: Response) => {
       link,
       type,
       title,
+      description,
       tags: tagObjectIds,
       userId,
     });

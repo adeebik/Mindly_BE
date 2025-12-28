@@ -4,10 +4,12 @@ import * as dotenv from "dotenv";
 import userRouter from "./routes/user";
 import noteRouter from "./routes/note";
 import shareRouter from "./routes/share";
-
+import cors from "cors"
 dotenv.config();
 const app = express();
 app.use(express.json());
+
+app.use(cors())
 
 app.use("/users", userRouter);
 app.use("/dashboard", noteRouter);

@@ -15,7 +15,8 @@ export const mindShare = async (req: Request, res: Response) => {
       if (existingLink) {
         const hashlink = existingLink.hash;
         return res.status(200).json({
-          "Link already created ": `${process.env.BASEURL}/share/mind/${hashlink}`,
+          link: `${process.env.BASEURL}/share/mind/${hashlink}`,
+          msg: "Link already exists"
         });
       }
 
@@ -27,7 +28,8 @@ export const mindShare = async (req: Request, res: Response) => {
       });
 
       res.status(200).json({
-        "Here is your Sharable Link": `${process.env.BASEURL}/share/mind/${hash}`,
+        link: `${process.env.BASEURL}/share/mind/${hash}`,
+        msg: "Link created successfully"
       });
     } catch (error) {
       res.status(500).json({ msg: "Unexpected Problem Occurred" });
@@ -98,7 +100,8 @@ export const contentShare = async (req: Request, res: Response) => {
       if (existingLink) {
         const hashlink = existingLink.hash;
         return res.status(200).json({
-          "Link already created ": `${process.env.BASEURL}/share/content/${hashlink}`,
+          link: `${process.env.BASEURL}/share/content/${hashlink}`,
+          msg: "Link already exists"
         });
       }
 
@@ -111,7 +114,8 @@ export const contentShare = async (req: Request, res: Response) => {
       });
 
       res.status(200).json({
-        "Here is your Sharable Link": `${process.env.BASEURL}/share/content/${hash}`,
+        link: `${process.env.BASEURL}/share/content/${hash}`,
+        msg: "Link created successfully"
       });
     } catch (error) {
       res.status(411).json({ msg: "Unexpected Problem Occurred" });

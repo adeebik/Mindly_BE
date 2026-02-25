@@ -43,7 +43,7 @@ export const signupController = async (req: Request, res: Response) => {
       name,
     });
     res.json({
-      msg: "signed up sucessfully",
+      msg: "signed up successfully",
     });
   } catch (error) {
     return res.status(500).json({ msg: "Error during signup" });

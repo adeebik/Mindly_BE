@@ -29,6 +29,7 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
     if (!verifyingToken) {
       return res.status(401).json({ msg: "Unauthorized" });
     }
+    
     req.userId = verifyingToken.id as string;
 
     next();

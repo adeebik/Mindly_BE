@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { createController, deleteController, updateController, getController } from "../controllers/crudController"
+import {
+  createController,
+  deleteController,
+  updateController,
+  getController,
+} from "../controllers/crudController";
 
 import { auth } from "../middleware/auth";
 import { tagsController } from "../controllers/tagsController";
@@ -10,7 +15,6 @@ noteRouter.get("/", auth, getController);
 noteRouter.post("/create", auth, createController);
 noteRouter.post("/update", auth, updateController);
 noteRouter.post("/delete", auth, deleteController);
-noteRouter.post("/tag", auth, tagsController)
-
+noteRouter.post("/tag", auth, tagsController);
 
 export default noteRouter;

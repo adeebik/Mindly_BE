@@ -30,7 +30,7 @@ export const signupController = async (req: Request, res: Response) => {
   const { email, password, name } = parseData.data;
 
   try {
-     const existingUser = await UserModel.findOne({ email });
+    const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ msg: "Email already registered" });
     }
@@ -80,11 +80,9 @@ export const signinController = async (req: Request, res: Response) => {
       return res.status(401).json({ msg: "Invalid email or password" });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET as string, 
-      {expiresIn: "7d"}
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
+      expiresIn: "7d",
+    });
 
     return res.json({
       msg: "Sucessfully Signed In",

@@ -16,7 +16,7 @@ export const mindShare = async (req: Request, res: Response) => {
         const hashlink = existingLink.hash;
         return res.status(200).json({
           link: hashlink,
-          msg: "Link already exists"
+          msg: "Link already exists",
         });
       }
 
@@ -28,8 +28,8 @@ export const mindShare = async (req: Request, res: Response) => {
       });
 
       res.status(200).json({
-          link: hash,
-        msg: "Link created successfully"
+        link: hash,
+        msg: "Link created successfully",
       });
     } catch (error) {
       res.status(500).json({ msg: "Unexpected Problem Occurred" });
@@ -101,7 +101,7 @@ export const contentShare = async (req: Request, res: Response) => {
         const hashlink = existingLink.hash;
         return res.status(200).json({
           link: hashlink,
-          msg: "Link already exists"
+          msg: "Link already exists",
         });
       }
 
@@ -115,7 +115,7 @@ export const contentShare = async (req: Request, res: Response) => {
 
       res.status(200).json({
         link: hash,
-        msg: "Link created successfully"
+        msg: "Link created successfully",
       });
     } catch (error) {
       res.status(411).json({ msg: "Unexpected Problem Occurred" });

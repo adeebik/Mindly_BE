@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { signinController, signupController } from "../controllers/loginController";
+import {
+  signinController,
+  signupController,
+} from "../controllers/loginController";
 
-const userRouter = Router(); 
+const userRouter = Router();
 
 userRouter.post("/signup", signupController);
 userRouter.post("/signin", signinController);

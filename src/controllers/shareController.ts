@@ -78,6 +78,47 @@ export const getMind = async (req: Request, res: Response) => {
   }
 };
 
+export const getShareStatus = async (req: Request, res: Response) => {
+  const userId = req.userId!;
+
+  try {
+    const existingLink = await LinkModel.findOne({ userId });
+    if (existingLink) {
+      return res.status(200).json({
+        isShared: true,
+        link: existingLink.hash,
+      });
+    }
+    return res.status(200).json({
+      isShared: false,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Unexpected Problem Occurred" });
+  }
+};
+
+export const getAllContentShareStatus = async (req: Request, res: Response) => {
+  const userId = req.userId!;
+
+  try {
+    const sharedLinks = await ContLinkModel.find({ userId });
+    
+    const sharedContents: Record<string, { link: string; isShared: boolean }> = {};
+    sharedLinks.forEach((link) => {
+      sharedContents[link.contentId.toString()] = {
+        link: link.hash,
+        isShared: true,
+      };
+    });
+
+    return res.status(200).json({
+      sharedContents,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Unexpected Problem Occurred" });
+  }
+};
+
 export const contentShare = async (req: Request, res: Response) => {
   const { share, contentId } = req.body;
   const userId = req.userId!;

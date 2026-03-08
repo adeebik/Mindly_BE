@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TagModel } from "../database/db";
+import { TagModel, ContentModel } from "../database/db";
 import { TagSchema } from "../types/schema";
 
 export const tagsController = async (req: Request, res: Response) => {
@@ -24,7 +24,10 @@ export const tagsController = async (req: Request, res: Response) => {
       });
     }
 
-    const newTag = await TagModel.create({ title });
+    const newTag = await TagModel.create({ 
+      title,
+      userId: req.userId as any
+    });
 
     return res.status(201).json({
       msg: "Tag created successfully",
@@ -42,10 +45,34 @@ export const tagsController = async (req: Request, res: Response) => {
 
 export const getAllTagsController = async (req: Request, res: Response) => {
   try {
-    const tags = await TagModel.find().sort({ title: 1 });
+    const tags = await TagModel.find({ userId: req.userId as any }).sort({ title: 1 });
     res.status(200).json({ tags });
   } catch (error) {
     console.error("Error fetching tags:", error);
     res.status(500).json({ msg: "Error fetching tags" });
+  }
+};
+
+export const deleteTagController = async (req: Request, res: Response) => {
+  const { tagId } = req.params;
+  const userId = req.userId;
+
+  try {
+    const result = await TagModel.deleteOne({ _id: tagId, userId: userId as any });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ msg: "Tag not found or unauthorized" });
+    }
+
+    // Pull the tag reference from all content documents belonging to the user
+    await ContentModel.updateMany(
+      { userId: userId as any },
+      { $pull: { tags: tagId } }
+    );
+
+    res.status(200).json({ msg: "Tag deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting tag:", error);
+    res.status(500).json({ msg: "Error deleting tag" });
   }
 };

@@ -52,6 +52,7 @@ export const createController = async (req: Request, res: Response) => {
       parsedData,
     });
   } catch (error) {
+    console.error("Error creating content:", error);
     res.status(500).json({
       msg: "Error creating Content",
       error: error,

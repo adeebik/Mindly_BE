@@ -25,7 +25,7 @@ export const signupController = async (req: Request, res: Response) => {
       return res.status(409).json({ msg: "Email already registered" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 5);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     await UserModel.create({
       email,

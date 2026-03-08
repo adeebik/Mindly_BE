@@ -24,9 +24,11 @@ const ContentSchema = new Schema({
 });
 
 const TagSchema = new Schema({
-  title: { type: String, required: true, unique: true },
+  title: { type: String, required: true },
   userId: { type: Types.ObjectId, ref: "users", required: true },
 });
+
+TagSchema.index({ title: 1, userId: 1 }, { unique: true });
 
 const LinkSchema = new Schema({
   hash: { type: String, required: true, unique: true },

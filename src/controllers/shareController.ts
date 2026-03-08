@@ -136,6 +136,10 @@ export const contentShare = async (req: Request, res: Response) => {
           .json({ msg: "Content Does Not Exists or Invalid" });
       }
 
+      if (checkContentExists.userId.toString() !== userId) {
+        return res.status(403).json({ msg: "Unauthorized to share this content" });
+      }
+
       const existingLink = await ContLinkModel.findOne({
         userId,
         contentId,

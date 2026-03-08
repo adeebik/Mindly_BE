@@ -1,14 +1,6 @@
 import { Request, Response } from "express";
-import z from "zod";
 import { TagModel } from "../database/db";
-
-const TagSchema = z.object({
-  title: z
-    .string("must be string")
-    .min(1)
-    .regex(/^\S+$/, "Must be a single word (no spaces)")
-    .toLowerCase(),
-});
+import { TagSchema } from "../types/schema";
 
 export const tagsController = async (req: Request, res: Response) => {
   const parsedTag = TagSchema.safeParse(req.body);
@@ -23,6 +15,7 @@ export const tagsController = async (req: Request, res: Response) => {
   const { title } = parsedTag.data;
 
   try {
+
     const existingTag = await TagModel.findOne({ title });
     if (existingTag) {
       return res.status(200).json({
@@ -37,12 +30,14 @@ export const tagsController = async (req: Request, res: Response) => {
       msg: "Tag created successfully",
       tag: newTag,
     });
+
   } catch (error) {
     console.error("Error creating tag:", error);
     return res.status(500).json({
       msg: "Error creating tag",
     });
   }
+  
 };
 
 export const getAllTagsController = async (req: Request, res: Response) => {

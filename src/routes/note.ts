@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   createController,
   deleteController,
-  updateController,
+  // updateController,
   getController,
 } from "../controllers/crudController";
 
@@ -11,10 +11,12 @@ import { tagsController } from "../controllers/tagsController";
 
 const noteRouter = Router();
 
-noteRouter.get("/", auth, getController);
-noteRouter.post("/create", auth, createController);
-noteRouter.post("/update", auth, updateController);
-noteRouter.post("/delete", auth, deleteController);
-noteRouter.post("/tag", auth, tagsController);
+noteRouter.use(auth)
+
+noteRouter.get("/", getController);
+noteRouter.post("/create", createController);
+// noteRouter.post("/update", updateController);
+noteRouter.post("/delete", deleteController);
+noteRouter.post("/tag", tagsController);
 
 export default noteRouter;

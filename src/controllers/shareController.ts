@@ -27,7 +27,7 @@ export const mindShare = async (req: Request, res: Response) => {
         userId,
       });
 
-      res.status(200).json({
+      res.status(201).json({
         link: hash,
         msg: "Link created successfully",
       });
@@ -48,6 +48,25 @@ export const mindShare = async (req: Request, res: Response) => {
     } catch (error) {
       res.json({ msg: "Unexpected error while deleting link" });
     }
+  }
+};
+
+export const getShareStatus = async (req: Request, res: Response) => {
+  const userId = req.userId!;
+
+  try {
+    const existingLink = await LinkModel.findOne({ userId });
+    if (existingLink) {
+      return res.status(200).json({
+        isShared: true,
+        link: existingLink.hash,
+      });
+    }
+    return res.status(200).json({
+      isShared: false,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Unexpected Problem Occurred" });
   }
 };
 
@@ -74,26 +93,9 @@ export const getMind = async (req: Request, res: Response) => {
       contents,
     });
   } catch (error) {
-    return res.status(404).json({ msg: "Page not found" });
-  }
-};
-
-export const getShareStatus = async (req: Request, res: Response) => {
-  const userId = req.userId!;
-
-  try {
-    const existingLink = await LinkModel.findOne({ userId });
-    if (existingLink) {
-      return res.status(200).json({
-        isShared: true,
-        link: existingLink.hash,
-      });
-    }
-    return res.status(200).json({
-      isShared: false,
+    return res.status(404).json({
+      msg: "Page not found",
     });
-  } catch (error) {
-    res.status(500).json({ msg: "Unexpected Problem Occurred" });
   }
 };
 
@@ -102,8 +104,9 @@ export const getAllContentShareStatus = async (req: Request, res: Response) => {
 
   try {
     const sharedLinks = await ContLinkModel.find({ userId });
-    
-    const sharedContents: Record<string, { link: string; isShared: boolean }> = {};
+
+    const sharedContents: Record<string, { link: string; isShared: boolean }> =
+      {};
     sharedLinks.forEach((link) => {
       sharedContents[link.contentId.toString()] = {
         link: link.hash,
@@ -154,12 +157,12 @@ export const contentShare = async (req: Request, res: Response) => {
         contentId,
       });
 
-      res.status(200).json({
+      res.status(201).json({
         link: hash,
         msg: "Link created successfully",
       });
     } catch (error) {
-      res.status(411).json({ msg: "Unexpected Problem Occurred" });
+      res.status(500).json({ msg: "Unexpected Problem Occurred" });
     }
   } else {
     try {
@@ -183,11 +186,10 @@ export const getContent = async (req: Request, res: Response) => {
 
   try {
     const link = await ContLinkModel.findOne({ hash });
+
     if (!link) {
       return res.status(404).json({ msg: "link is invalid or not found" });
     }
-
-    console.log(link);
 
     const contentId = link.contentId.toString();
 
@@ -199,6 +201,8 @@ export const getContent = async (req: Request, res: Response) => {
       content,
     });
   } catch (error) {
-    return res.status(404).json({ msg: "Page not found" });
+    return res.status(404).json({
+      msg: "Page not found",
+    });
   }
 };

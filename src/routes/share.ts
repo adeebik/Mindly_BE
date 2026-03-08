@@ -13,6 +13,7 @@ import {
 shareRouter.post("/mindShare", auth, mindShare);
 shareRouter.get("/mindShare", auth, getShareStatus);
 shareRouter.get("/mind/:ShareLink", getMind);
+
 shareRouter.post("/contentShare", auth, contentShare);
 shareRouter.get("/contentShare", auth, getAllContentShareStatus);
 shareRouter.get("/content/:ShareLink", getContent);

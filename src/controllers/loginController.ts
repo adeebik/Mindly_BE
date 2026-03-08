@@ -1,23 +1,13 @@
 import { Request, Response } from "express";
 import { UserModel } from "../database/db";
 import bcrypt from "bcrypt";
-import z from "zod";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import { mySchema, signinSchema } from "../types/schema";
 
 dotenv.config();
 
 export const signupController = async (req: Request, res: Response) => {
-  const mySchema = z.object({
-    email: z.string().email().trim().toLowerCase(),
-    password: z.string().min(6).max(50),
-    name: z
-      .string()
-      .min(2, "Name must be at least 2 characters")
-      .max(50, "Name too long")
-      .regex(/^[A-Za-z\s]+$/, "Name can only contain letters and spaces"),
-  });
-
   const parseData = mySchema.safeParse(req.body);
 
   if (!parseData.success) {
@@ -42,18 +32,13 @@ export const signupController = async (req: Request, res: Response) => {
       password: hashedPassword,
       name,
     });
-    res.json({
-      msg: "signed up successfully",
+    res.status(201).json({
+      msg: "Signed up successfully",
     });
   } catch (error) {
     return res.status(500).json({ msg: "Error during signup" });
   }
 };
-
-const signinSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
-});
 
 export const signinController = async (req: Request, res: Response) => {
   const parseData = signinSchema.safeParse(req.body);
@@ -80,11 +65,13 @@ export const signinController = async (req: Request, res: Response) => {
       return res.status(401).json({ msg: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
-      expiresIn: "7d",
-    });
+    const token = jwt.sign(
+      { id: user._id }, 
+      process.env.JWT_SECRET as string, 
+      {expiresIn: "7d"}
+    );
 
-    return res.json({
+    return res.status(200).json({
       msg: "Sucessfully Signed In",
       token,
     });

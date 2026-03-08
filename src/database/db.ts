@@ -13,6 +13,7 @@ const UserSchema = new Schema({
 });
 
 const ContentTypes = ["twitter", "youtube"];
+
 const ContentSchema = new Schema({
   link: { type: String, required: true },
   type: { type: String, enum: ContentTypes, required: true },
